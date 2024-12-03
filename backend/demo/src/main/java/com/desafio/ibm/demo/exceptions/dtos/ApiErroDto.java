@@ -1,4 +1,4 @@
-package com.desafio.ibm.demo.exceptions;
+package com.desafio.ibm.demo.exceptions.dtos;
 
 import com.desafio.ibm.demo.exceptions.dtos.CausaErroDto;
 import com.fasterxml.jackson.annotation.JsonInclude;

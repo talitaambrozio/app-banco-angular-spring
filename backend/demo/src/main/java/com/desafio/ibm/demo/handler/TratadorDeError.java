@@ -1,6 +1,7 @@
 package com.desafio.ibm.demo.handler;
 
 import com.desafio.ibm.demo.exceptions.*;
+import com.desafio.ibm.demo.exceptions.dtos.ApiErroDto;
 import com.desafio.ibm.demo.exceptions.dtos.CausaErroDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
