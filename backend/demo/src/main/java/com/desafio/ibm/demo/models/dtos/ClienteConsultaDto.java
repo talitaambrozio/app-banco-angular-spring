@@ -2,7 +2,9 @@ package com.desafio.ibm.demo.models.dtos;
 
 import com.desafio.ibm.demo.models.Cliente;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public record ClienteConsultaDto(
 
@@ -32,5 +34,10 @@ public record ClienteConsultaDto(
                 cliente.getEndereco().getCep(),
                 cliente.getEndereco().getEstado(),
                 cliente.getEndereco().getPais());
+    }
+    public static List<ClienteConsultaDto> converterParaListaDto(List<Cliente> clientes){
+        return clientes.stream()
+                .map(ClienteConsultaDto::new)
+                .collect(Collectors.toList());
     }
 }

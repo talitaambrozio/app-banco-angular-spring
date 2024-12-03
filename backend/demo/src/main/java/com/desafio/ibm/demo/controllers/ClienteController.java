@@ -5,21 +5,20 @@ import com.desafio.ibm.demo.models.dtos.ClienteConsultaDto;
 import com.desafio.ibm.demo.models.dtos.ClienteRegistroDto;
 import com.desafio.ibm.demo.services.ClienteService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/cliente")
 public class ClienteController {
 
-    private final ClienteService clienteService;
-
-    public ClienteController(ClienteService clienteService) {
-        this.clienteService = clienteService;
-    }
+    @Autowired
+    private  ClienteService clienteService;
 
     @PostMapping("/salvar-cliente/")
     public ResponseEntity<ClienteConsultaDto> salvarCliente(@RequestBody ClienteRegistroDto dto){
@@ -44,6 +43,12 @@ public class ClienteController {
     @GetMapping("/buscar-cliente-id/{id}")
     public ResponseEntity<ClienteConsultaDto> buscarCliente(@PathVariable UUID id){
         return new ResponseEntity<ClienteConsultaDto>(clienteService.buscarClienteId(id),
+                HttpStatus.OK);
+    }
+
+    @GetMapping("/clientes")
+    public ResponseEntity<List<ClienteConsultaDto>> buscarClientes(){
+        return new ResponseEntity<List<ClienteConsultaDto>>(clienteService.buscarClientes(),
                 HttpStatus.OK);
     }
 }

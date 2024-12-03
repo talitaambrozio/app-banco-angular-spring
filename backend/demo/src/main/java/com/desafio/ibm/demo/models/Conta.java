@@ -1,5 +1,6 @@
 package com.desafio.ibm.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,9 +23,10 @@ public class Conta {
     private String numeroConta;
     private String digitoConta;
     private String agencia;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private Date dataAbertura;
 
-    @OneToMany(mappedBy = "conta")
+    @OneToMany(mappedBy = "conta", fetch = FetchType.LAZY)
     private List<Transacao> transacoes;
 
 
