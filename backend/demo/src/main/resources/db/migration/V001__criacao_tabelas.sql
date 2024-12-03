@@ -5,7 +5,7 @@ CREATE TABLE "endereco" (
                            "numero" integer NOT NULL,
                            "cidade" varchar(60) NOT NULL,
                            "cep" varchar(15) NOT NULL,
-                           "estado" varchar(60) NOT NULL,
+                           "estado" varchar(2) NOT NULL,
                            "pais" varchar(60) NOT NULL
 );
 

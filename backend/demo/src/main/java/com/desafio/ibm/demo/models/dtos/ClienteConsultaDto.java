@@ -2,8 +2,11 @@ package com.desafio.ibm.demo.models.dtos;
 
 import com.desafio.ibm.demo.models.Cliente;
 
+import java.util.UUID;
+
 public record ClienteConsultaDto(
 
+        UUID clienteId,
         String nome,
         Integer idade,
         String email,
@@ -17,7 +20,8 @@ public record ClienteConsultaDto(
         String pais
 ) {
     public ClienteConsultaDto(Cliente cliente){
-        this(cliente.getNome(),
+        this(cliente.getClienteId(),
+                cliente.getNome(),
                 cliente.getIdade(),
                 cliente.getEmail(),
                 cliente.getConta().getNumeroConta(),
