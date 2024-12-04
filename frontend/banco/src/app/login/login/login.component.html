@@ -1,0 +1,33 @@
+<div>
+  <div class="container">
+    <div class="card p-5 mt-3">
+      <h1>Bem vindo(a)!</h1>
+      <mat-form-field class="example-full-width">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="email"
+          name="email"
+          [(ngModel)]="login.email"
+          required
+          placeholder="Ex. pat@example.com"
+        />
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Senha</mat-label>
+        <input
+          matInput
+          type="text"
+          name="senha"
+          [(ngModel)]="login.senha"
+          required
+          placeholder="Ex. @!#D9ASA56"
+        />
+      </mat-form-field>
+      <div class="example-button-row">
+        <button mat-raised-button color="primary">Acessar</button>
+      </div>
+    </div>
+  </div>
+</div>

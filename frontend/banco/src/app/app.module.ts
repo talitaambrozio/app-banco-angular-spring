@@ -26,6 +26,7 @@ import { HomeComponent } from './home/home.component';
 import { TransacoesComponent } from './transacoes/transacoes.component';
 
 import localePt from '@angular/common/locales/pt';
+import { LoginComponent } from './login/login/login.component';
 registerLocaleData(localePt);
 
 export const MY_DATE_FORMATS = {
@@ -50,7 +51,8 @@ export const MY_DATE_FORMATS = {
     DadosPessoaisComponent,
     TransacoesComponent,
     DadosBancariosComponent,
-    ExtratoBancarioComponent
+    ExtratoBancarioComponent,
+    LoginComponent
 
   ],
   imports: [

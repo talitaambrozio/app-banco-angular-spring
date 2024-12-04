@@ -7,6 +7,7 @@ import { DadosPessoaisComponent } from './dados-pessoais/dados-pessoais.componen
 import { DadosBancariosComponent } from './dados-bancarios/dados-bancarios.component';
 import { ExtratoBancarioComponent } from './extrato-bancario/extrato-bancario.component';
 import { TransacoesComponent } from './transacoes/transacoes.component';
+import { LoginComponent } from './login/login/login.component';
 
 const routes: Routes = [
   {path: 'header', component: HeaderComponent},
@@ -16,6 +17,7 @@ const routes: Routes = [
   {path: 'dados-bancarios', component: DadosBancariosComponent},
   {path: 'extrato-bancario', component: ExtratoBancarioComponent},
   {path: 'transacoes-financeiras', component: TransacoesComponent},
+  {path: 'login', component: LoginComponent},
 ];
 
 @NgModule({
