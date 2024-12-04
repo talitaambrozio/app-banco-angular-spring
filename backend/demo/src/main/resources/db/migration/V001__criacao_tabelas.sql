@@ -1,14 +1,3 @@
-CREATE TABLE "endereco" (
-                           "endereco_id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-                           "logradouro" varchar(80) NOT NULL,
-                           "bairro" varchar(80) NOT NULL,
-                           "numero" integer NOT NULL,
-                           "cidade" varchar(60) NOT NULL,
-                           "cep" varchar(15) NOT NULL,
-                           "estado" varchar(2) NOT NULL,
-                           "pais" varchar(60) NOT NULL
-);
-
 CREATE TABLE "conta" (
                            "conta_id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
                            "numero_conta" varchar(10) NOT NULL UNIQUE,
@@ -21,10 +10,8 @@ CREATE TABLE "cliente" (
                            "cliente_id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
                            "nome" varchar(80) UNIQUE NOT NULL,
                            "idade" int NOT NULL,
-                           "endereco_id" UUID NOT NULL,
                            "email" varchar(100) NOT NULL UNIQUE,
                            "conta_id" UUID NOT NULL UNIQUE,
-                           CONSTRAINT fk_endereco FOREIGN KEY ("endereco_id") REFERENCES "endereco" ("endereco_id") ON DELETE CASCADE,
                            CONSTRAINT fk_conta FOREIGN KEY ("conta_id") REFERENCES "conta" ("conta_id") ON DELETE CASCADE
 );
 

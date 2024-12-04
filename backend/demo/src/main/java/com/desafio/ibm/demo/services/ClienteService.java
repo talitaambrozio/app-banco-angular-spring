@@ -4,12 +4,10 @@ import com.desafio.ibm.demo.exceptions.ErroConflitoExcecao;
 import com.desafio.ibm.demo.exceptions.RecursoNaoEncontradoExcecao;
 import com.desafio.ibm.demo.models.Cliente;
 import com.desafio.ibm.demo.models.Conta;
-import com.desafio.ibm.demo.models.Endereco;
 import com.desafio.ibm.demo.models.dtos.ClienteAtualizaEmailDto;
 import com.desafio.ibm.demo.models.dtos.ClienteConsultaDto;
 import com.desafio.ibm.demo.models.dtos.ClienteRegistroDto;
 import com.desafio.ibm.demo.repositories.ClienteRepository;
-import com.desafio.ibm.demo.repositories.EnderecoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,8 +19,6 @@ import java.util.UUID;
 public class ClienteService {
     @Autowired
     private  ClienteRepository clienteRepository;
-    @Autowired
-    private  EnderecoRepository enderecoRepository;
     @Autowired
     private  ContaService contaService;
 
@@ -39,14 +35,8 @@ public class ClienteService {
         novoCliente.setIdade(clienteRegistroDto.idade());
         novoCliente.setEmail(clienteRegistroDto.email());
 
-        Endereco novoEndereco = getEndereco(clienteRegistroDto);
-        enderecoRepository.save(novoEndereco);
-
-        novoCliente.setEndereco(novoEndereco);
-
         Conta novaConta = contaService.criarConta(clienteRegistroDto.contaRegistroDto());
         novoCliente.setConta(novaConta);
-        novoCliente.setEndereco(novoEndereco);
         clienteRepository.save(novoCliente);
 
         return new ClienteConsultaDto(novoCliente);
@@ -60,21 +50,6 @@ public class ClienteService {
         cliente.setNome(clienteRegistroDto.nome());
         cliente.setIdade(clienteRegistroDto.idade());
         cliente.setEmail(clienteRegistroDto.email());
-
-        Endereco enderecoAtual = cliente.getEndereco();
-        Endereco enderecoAtualizado = clienteRegistroDto.enderecoDto().converterParaEntidade(id);
-
-        if (enderecoAtual != null) {
-            enderecoAtual.setLogradouro(enderecoAtualizado.getLogradouro());
-            enderecoAtual.setBairro(enderecoAtualizado.getBairro());
-            enderecoAtual.setNumero(enderecoAtualizado.getNumero());
-            enderecoAtual.setCidade(enderecoAtualizado.getCidade());
-            enderecoAtual.setCep(enderecoAtualizado.getCep());
-            enderecoAtual.setEstado(enderecoAtualizado.getEstado());
-            enderecoAtual.setPais(enderecoAtualizado.getPais());
-        } else {
-            cliente.setEndereco(enderecoAtualizado);
-        }
 
         clienteRepository.save(cliente);
         return new ClienteConsultaDto(cliente);
@@ -103,15 +78,5 @@ public class ClienteService {
         }
         return ClienteConsultaDto.converterParaListaDto(clientes);
     }
-    private static Endereco getEndereco(ClienteRegistroDto clienteRegistroDto) {
-        Endereco novoEndereco = new Endereco();
-        novoEndereco.setLogradouro(clienteRegistroDto.enderecoDto().logradouro());
-        novoEndereco.setBairro(clienteRegistroDto.enderecoDto().bairro());
-        novoEndereco.setNumero(clienteRegistroDto.enderecoDto().numero());
-        novoEndereco.setCidade(clienteRegistroDto.enderecoDto().cidade());
-        novoEndereco.setCep(clienteRegistroDto.enderecoDto().cep());
-        novoEndereco.setEstado(clienteRegistroDto.enderecoDto().estado());
-        novoEndereco.setPais(clienteRegistroDto.enderecoDto().pais());
-        return novoEndereco;
-    }
+
 }

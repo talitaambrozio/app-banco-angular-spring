@@ -15,8 +15,6 @@ public record ClienteRegistroDto(
         @NotBlank(message = "Não deve estar em branco")
          String email,
         @Valid
-        EnderecoRegistroDto enderecoDto,
-        @Valid
         ContaRegistroDto contaRegistroDto
 
 ) {

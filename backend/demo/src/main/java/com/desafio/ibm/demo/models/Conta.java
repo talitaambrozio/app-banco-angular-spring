@@ -29,7 +29,4 @@ public class Conta {
     @OneToMany(mappedBy = "conta", fetch = FetchType.LAZY)
     private List<Transacao> transacoes;
 
-
-
-
 }

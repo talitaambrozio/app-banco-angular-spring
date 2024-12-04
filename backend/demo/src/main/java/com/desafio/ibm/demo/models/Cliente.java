@@ -21,9 +21,6 @@ public class Cliente {
     private Integer idade;
     private String email;
     @OneToOne
-    @JoinColumn(name = "endereco_id")
-    private Endereco endereco;
-    @OneToOne
     @JoinColumn(name = "conta_id")
     private Conta conta;
 }
