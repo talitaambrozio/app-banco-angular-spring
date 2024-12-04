@@ -1,0 +1,59 @@
+<button
+  mat-icon-button
+  color="primary"
+  routerLink="/"
+  aria-label="Example icon button with a home icon"
+>
+  <mat-icon>home</mat-icon>
+</button>
+
+<div class="container">
+  <div class="card p-5 mt-3">
+    <form #transacaoForm="ngForm" (ngSubmit)="novaTransacao(transacaoForm)">
+      <h1>Efetuar nova transação</h1>
+
+      <mat-form-field>
+        <mat-label>Número da Conta</mat-label>
+        <input matInput [value]="numeroConta" disabled />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Valor</mat-label>
+        <input
+          matInput
+          [(ngModel)]="transacao.valor"
+          [value]="formatCurrency(transacao.valor)"
+          (ngModelChange)="transacao.valor = $event"
+          name="valor"
+          required
+        />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Tipo de Transação</mat-label>
+        <mat-select
+          [(ngModel)]="transacao.tipoTransacao"
+          name="tipoTransacao"
+          required
+        >
+          <mat-option value="Débito">Débito</mat-option>
+          <mat-option value="Crédito">Crédito</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Descrição</mat-label>
+        <textarea
+          matInput
+          [(ngModel)]="transacao.descricao"
+          name="descricao"
+          required
+        ></textarea>
+      </mat-form-field>
+
+      <div class="example-button-row">
+        <button mat-raised-button color="primary" type="submit">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>

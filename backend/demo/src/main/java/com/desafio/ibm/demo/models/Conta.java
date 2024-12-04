@@ -25,7 +25,6 @@ public class Conta {
     private String agencia;
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private Date dataAbertura;
-
     @OneToMany(mappedBy = "conta", fetch = FetchType.LAZY)
     private List<Transacao> transacoes;
 

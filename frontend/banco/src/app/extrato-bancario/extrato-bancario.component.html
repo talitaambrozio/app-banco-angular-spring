@@ -1,0 +1,154 @@
+<button
+  mat-icon-button
+  color="primary"
+  routerLink="/"
+  aria-label="Example icon button with a home icon"
+>
+  <mat-icon>home</mat-icon>
+</button>
+
+<div>
+  <h1>Extrato Bancário</h1>
+
+
+  <div class="filtro">
+    <form [formGroup]="filtroForm" (ngSubmit)="consultarTransacoesComFiltro()">
+      <mat-form-field appearance="fill">
+        <mat-label>Data Inicial</mat-label>
+        <input
+          matInput
+          [matDatepicker]="pickerDataInicial"
+          formControlName="dataInicial"
+          placeholder="dd/mm/yyyy"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="pickerDataInicial"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #pickerDataInicial></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Data Final</mat-label>
+        <input
+          matInput
+          [matDatepicker]="pickerDataFinal"
+          formControlName="dataFinal"
+          placeholder="dd/mm/yyyy"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="pickerDataFinal"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #pickerDataFinal></mat-datepicker>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit">Filtrar</button>
+      <button mat-raised-button color="basic" (click)="limparFiltro()">Limpar Filtro</button>
+    </form>
+  </div>
+
+  <!-- Tabela de Transações -->
+  <div *ngIf="!isFiltroAtivo" class="lista-transacoes">
+    <table mat-table [dataSource]="transacoes" class="mat-elevation-z8">
+      <ng-container matColumnDef="dataTransacao">
+        <th mat-header-cell *matHeaderCellDef>Data da Transação</th>
+        <td mat-cell *matCellDef="let transacao">
+          {{ transacao.dataTransacao | date : "dd/MM/yyyy HH:mm:ss" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="tipoTransacao">
+        <th mat-header-cell *matHeaderCellDef>Tipo da Transação</th>
+        <td mat-cell *matCellDef="let transacao">
+          {{ transacao.tipoTransacao }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="valor">
+        <th mat-header-cell *matHeaderCellDef>Valor</th>
+        <td mat-cell *matCellDef="let transacao">
+          <span *ngIf="transacao.tipoTransacao === 'D'" class="text-danger">
+            - {{ transacao.valor | currency : "BRL" }}
+          </span>
+          <span *ngIf="transacao.tipoTransacao !== 'D'">
+            {{ transacao.valor | currency : "BRL" }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="descricao">
+        <th mat-header-cell *matHeaderCellDef>Descrição</th>
+        <td mat-cell *matCellDef="let transacao">
+          {{ transacao.descricao }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+
+  <!-- Extrato Bancário -->
+  <div *ngIf="isFiltroAtivo" class="extrato-bancario">
+    <div class="saldo">
+      <h1>
+        Saldo <span>{{ extratoBancario.saldo | currency : "BRL" }}</span>
+      </h1>
+    </div>
+
+    <h1>
+      Extrato Bancário -
+      <span
+        >{{ extratoBancario.dataInicial  }} -
+        {{ extratoBancario.dataFinal  }}</span
+      >
+    </h1>
+
+
+    <!-- Tabela de Transações dentro do Extrato Selecionado-->
+    <div class="lista-transacoes">
+      <table
+        mat-table
+        [dataSource]="extratoBancario.transacoes"
+        class="mat-elevation-z8"
+      >
+        <ng-container matColumnDef="dataTransacao">
+          <th mat-header-cell *matHeaderCellDef>Data da Transação</th>
+          <td mat-cell *matCellDef="let transacao">
+            {{ transacao.dataTransacao | date : "dd/MM/yyyy HH:mm:ss" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tipoTransacao">
+          <th mat-header-cell *matHeaderCellDef>Tipo da Transação</th>
+          <td mat-cell *matCellDef="let transacao">
+            {{ transacao.tipoTransacao }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="valor">
+          <th mat-header-cell *matHeaderCellDef>Valor</th>
+          <td mat-cell *matCellDef="let transacao">
+            <span *ngIf="transacao.tipoTransacao === 'D'" class="text-danger">
+              - {{ transacao.valor | currency : "BRL" }}
+            </span>
+            <span *ngIf="transacao.tipoTransacao !== 'D'">
+              {{ transacao.valor | currency : "BRL" }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="descricao">
+          <th mat-header-cell *matHeaderCellDef>Descrição</th>
+          <td mat-cell *matCellDef="let transacao">
+            {{ transacao.descricao }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+  </div>
+</div>

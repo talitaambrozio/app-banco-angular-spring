@@ -1,0 +1,94 @@
+<button mat-icon-button color="primary" routerLink="/" aria-label="Example icon button with a home icon">
+  <mat-icon>home</mat-icon>
+</button>
+
+<div class="container">
+  <div class="card p-5 mt-3">
+    <form #cadastroForm="ngForm" (ngSubmit)="salvarCliente(cadastroForm)">
+      <h1>Realize o seu cadastro</h1>
+
+      <!-- NOME -->
+      <mat-form-field class="example-form-field">
+        <mat-label>Nome</mat-label>
+        <input
+          matInput
+          type="text"
+          name="nome"
+          [(ngModel)]="cliente.nome"
+          required
+        />
+        <mat-error *ngIf="cadastroForm.controls['nome']?.invalid">
+          Nome é obrigatório.
+        </mat-error>
+        <button
+          *ngIf="cliente.nome"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="cliente.nome = ''"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <!-- IDADE -->
+      <mat-form-field class="example-form-field">
+        <mat-label>Idade</mat-label>
+        <input
+          matInput
+          type="number"
+          name="idade"
+          [(ngModel)]="cliente.idade"
+          required
+        />
+        <mat-error *ngIf="cadastroForm.controls['idade']?.invalid">
+          Idade é obrigatória e deve ser maior que 0.
+        </mat-error>
+        <button
+          *ngIf="cliente.idade"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="cliente.idade = 0"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <!-- EMAIL -->
+      <mat-form-field class="example-full-width">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="email"
+          name="email"
+          [(ngModel)]="cliente.email"
+          required
+          placeholder="Ex. pat@example.com"
+        />
+        <mat-error *ngIf="cadastroForm.controls['email']?.invalid">
+          Email é obrigatório ou inválido.
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Agência -->
+      <mat-form-field class="example-form-field">
+        <mat-label>Agência</mat-label>
+        <input
+          matInput
+          type="text"
+          name="agencia"
+          [(ngModel)]="cliente.contaRegistroDto.agencia"
+          required
+        />
+        <mat-error *ngIf="!cadastroForm.controls['agencia']?.valid"
+          >Agência é obrigatória</mat-error
+        >
+      </mat-form-field>
+
+      <div class="example-button-row">
+        <button mat-raised-button color="primary">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,6 +1,8 @@
 package com.desafio.ibm.demo.services;
 
+import com.desafio.ibm.demo.exceptions.RecursoNaoEncontradoExcecao;
 import com.desafio.ibm.demo.models.Conta;
+import com.desafio.ibm.demo.models.dtos.ContaConsultaDto;
 import com.desafio.ibm.demo.models.dtos.ContaRegistroDto;
 import com.desafio.ibm.demo.repositories.ContaRepository;
 import jakarta.transaction.Transactional;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
@@ -62,4 +65,10 @@ public class ContaService {
         conta.setDigitoConta(digitoConta);
     }
 
+    public ContaConsultaDto buscarDadosConta(UUID id){
+        Conta conta = contaRepository
+                            .findByContaId(id)
+                            .orElseThrow(()->new RecursoNaoEncontradoExcecao("Conta inexistente."));
+        return new ContaConsultaDto(conta);
+    }
 }

@@ -1,0 +1,35 @@
+<button
+  mat-icon-button
+  color="primary"
+  routerLink="/"
+  aria-label="Example icon button with a home icon"
+>
+  <mat-icon>home</mat-icon>
+</button>
+
+<div>
+  <h1>Dados Bancários</h1>
+  <table mat-table [dataSource]="[conta]" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="numeroConta">
+      <th mat-header-cell *matHeaderCellDef>Número da Conta</th>
+      <td mat-cell *matCellDef="let element">{{ element.numeroConta }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="digitoConta">
+      <th mat-header-cell *matHeaderCellDef>Dígito da Conta</th>
+      <td mat-cell *matCellDef="let element">{{ element.digitoConta }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="agencia">
+      <th mat-header-cell *matHeaderCellDef>Agência</th>
+      <td mat-cell *matCellDef="let element">{{ element.agencia }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>
+
+
+
