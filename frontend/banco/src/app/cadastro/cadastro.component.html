@@ -71,6 +71,21 @@
         </mat-error>
       </mat-form-field>
 
+      <!-- Senha -->
+      <mat-form-field class="example-form-field">
+        <mat-label>Senha</mat-label>
+        <input
+          matInput
+          type="password"
+          name="password"
+          [(ngModel)]="cliente.password"
+          required
+        />
+        <mat-error *ngIf="!cadastroForm.controls['password']?.valid"
+          >Senha é obrigatória</mat-error
+        >
+      </mat-form-field>
+
       <!-- Agência -->
       <mat-form-field class="example-form-field">
         <mat-label>Agência</mat-label>

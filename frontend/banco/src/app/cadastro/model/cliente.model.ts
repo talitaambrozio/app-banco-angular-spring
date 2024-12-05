@@ -4,6 +4,7 @@ export interface Cliente{
   nome: string;
   idade: number;
   email: string;
+  password: string;
   contaRegistroDto: {
     agencia: string
   };

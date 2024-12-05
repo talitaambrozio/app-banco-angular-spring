@@ -18,6 +18,7 @@ export class DadosPessoaisComponent implements OnInit {
     nome: '',
     idade: 0,
     email: '',
+    password: '',
     contaRegistroDto: { agencia: '' },
   };
 

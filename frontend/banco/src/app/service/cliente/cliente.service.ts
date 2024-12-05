@@ -14,9 +14,10 @@ export class ClienteService {
   constructor(private httpClient: HttpClient, private authService: AutenticacaoService) { }
 
   apiUrl = "http://localhost:8080/api/v1/cliente";
+  urlCadastro = "http://localhost:8080/api/v1/users/salvar-cliente";
 
   public salvarCliente(cliente: Cliente): Observable<Cliente>{
-    return this.httpClient.post<Cliente>(`${this.apiUrl}/salvar-cliente/`, cliente);
+    return this.httpClient.post<Cliente>(this.urlCadastro, cliente);
   }
 
   public buscarCliente(clienteId: string): Observable<Cliente>{

@@ -55,7 +55,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/users/login").permitAll()
+                        .requestMatchers("/api/v1/users/login", "/api/v1/users/salvar-cliente").permitAll()
                          .requestMatchers("/api/v1/cliente/**").hasRole("USER")
                          .requestMatchers("/api/v1/conta/**").hasRole("USER")
                          .requestMatchers("/api/v1/transacao/**").hasRole("USER")
