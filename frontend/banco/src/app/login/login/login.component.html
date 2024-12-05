@@ -1,33 +1,49 @@
 <div>
   <div class="container">
     <div class="card p-5 mt-3">
-      <h1>Bem vindo(a)!</h1>
-      <mat-form-field class="example-full-width">
-        <mat-label>Email</mat-label>
-        <input
-          matInput
-          type="email"
-          name="email"
-          [(ngModel)]="login.email"
-          required
-          placeholder="Ex. pat@example.com"
-        />
-      </mat-form-field>
+      <h1>Bem-vindo(a)!</h1>
+      <form (ngSubmit)="onSubmit()">
+        <!-- Campo de Nome de Usuário -->
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Nome de Usuário</mat-label>
+          <input
+            matInput
+            type="text"
+            name="email"
+            [(ngModel)]="login.email"
+            required
+            placeholder="Ex. maria@email.com"
+          />
+        </mat-form-field>
 
-      <mat-form-field class="example-full-width">
-        <mat-label>Senha</mat-label>
-        <input
-          matInput
-          type="text"
-          name="senha"
-          [(ngModel)]="login.senha"
-          required
-          placeholder="Ex. @!#D9ASA56"
-        />
-      </mat-form-field>
-      <div class="example-button-row">
-        <button mat-raised-button color="primary">Acessar</button>
-      </div>
+        <!-- Campo de Senha -->
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Senha</mat-label>
+          <input
+            matInput
+            type="password"
+            name="password"
+            [(ngModel)]="login.password"
+            required
+            placeholder="Digite sua senha"
+          />
+        </mat-form-field>
+
+        <!-- Botão de Login -->
+        <div class="example-button-row">
+          <button mat-raised-button color="primary" type="submit">
+            Acessar
+          </button>
+        </div>
+      </form>
     </div>
+  </div>
+  <div class="cadastro">
+    <h3>
+      Não possui cadastro? Cadastre-se
+      <span routerLink="/cadastro" style="cursor: pointer; color: blue"
+        >Aqui</span
+      >
+    </h3>
   </div>
 </div>

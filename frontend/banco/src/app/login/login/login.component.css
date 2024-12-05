@@ -1,3 +1,10 @@
 mat-form-field {
   display: block;
 }
+
+.cadastro {
+  width: 100%;
+  max-width: 550px;
+  padding-top: 20px;
+  text-align: center;
+}

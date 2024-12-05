@@ -14,6 +14,8 @@ public record ClienteRegistroDto(
          Integer idade,
         @NotBlank(message = "Não deve estar em branco")
          String email,
+        @NotBlank(message = "Não deve estar em branco")
+        String password,
         @Valid
         ContaRegistroDto contaRegistroDto
 

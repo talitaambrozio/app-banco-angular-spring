@@ -35,9 +35,12 @@ export class TransacaoService {
       );
   }
 
-  public obterSaldo(contaId: string): Observable<number> {
-    return this.httpClient.get<number>(`${this.apiUrl}/transacoes/obter-saldo/${contaId}`);
+  public obterSaldoAtual(contaId: string): Observable<number>{
+    return this.httpClient.get<number>(`${this.apiUrl}/transacoes/obter-saldo-atual`, {
+      params: {
+        contaId: contaId
+      }
+    },);
   }
-
 
 }

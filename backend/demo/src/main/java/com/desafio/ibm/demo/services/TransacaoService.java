@@ -1,6 +1,7 @@
 package com.desafio.ibm.demo.services;
 
 import com.desafio.ibm.demo.exceptions.RecursoNaoEncontradoExcecao;
+import com.desafio.ibm.demo.exceptions.RequisicaoInvalidaExcecao;
 import com.desafio.ibm.demo.models.Conta;
 import com.desafio.ibm.demo.models.Transacao;
 import com.desafio.ibm.demo.models.dtos.ExtratoBancarioDto;
@@ -17,7 +18,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -31,23 +31,31 @@ public class TransacaoService {
     @Transactional
     public TransacaoConsultaDto novaTransacao(TransacaoRegistroDto transacaoRegistroDto){
 
+        Conta conta = contaRepository.findById(transacaoRegistroDto.conta().getContaId())
+                .orElseThrow(() -> new RecursoNaoEncontradoExcecao("Conta inexistente."));
+
+        String tipoTransacao = String.valueOf(transacaoRegistroDto.tipoTransacao());
+
+        if (tipoTransacao.equals("D")) {
+            double saldoAtual = obterSaldoAtual(conta.getContaId());
+            if (transacaoRegistroDto.valor() > saldoAtual) {
+                throw new RequisicaoInvalidaExcecao("Saldo insuficiente para realizar a transação!");
+            }
+        }
+
         Transacao novaTransacao = new Transacao();
         novaTransacao.setDataTransacao(new Date());
         novaTransacao.setTipoTransacao(transacaoRegistroDto.tipoTransacao());
         novaTransacao.setValor(transacaoRegistroDto.valor());
         novaTransacao.setDescricao(transacaoRegistroDto.descricao());
+        novaTransacao.setConta(conta);
 
-        Optional<Conta> conta = contaRepository.findById(transacaoRegistroDto.conta().getContaId());
-        if(conta.isEmpty()){
-            throw new RecursoNaoEncontradoExcecao("Conta inexistente.");
-        }
-        conta.ifPresent(novaTransacao::setConta);
         transacaoRepository.save(novaTransacao);
         return new TransacaoConsultaDto(novaTransacao);
     }
 
     public List<TransacaoConsultaDto> consultarTransacoes(UUID contaId){
-        List<Transacao> transacoes = transacaoRepository.findAllByContaContaId(contaId);
+        List<Transacao> transacoes = transacaoRepository.findByContaContaId(contaId);
         if(transacoes.isEmpty()){
             throw new RecursoNaoEncontradoExcecao("Não há transações para a conta" + contaId + ".");
         }
@@ -64,27 +72,32 @@ public class TransacaoService {
         List<Transacao> transacoes = transacaoRepository
                 .findByContaContaIdAndDataTransacaoBetween(contaId, dataInicialConvertida, dataFinalConvertida);
 
-        if(transacoes.isEmpty()){
-            throw new RecursoNaoEncontradoExcecao("Parâmetros inválidos.");
-        }
-        double saldo = transacoes.stream().mapToDouble(transacao -> {
-            if(transacao.getTipoTransacao() == 'D'){
-                return - transacao.getValor();
-            }else{
-                return transacao.getValor();
-            }
-        }).sum();
+        Double saldoDoPeriodo = transacoes.stream()
+                .mapToDouble(transacao -> {
+                    if (transacao.getTipoTransacao() == 'D') {
+                        return -transacao.getValor();
+                    } else {
+                        return transacao.getValor();
+                    }
+                })
+                .sum();
 
-        return new ExtratoBancarioDto(dataInicial, dataFinal, saldo, transacoes);
+        double saldoAtual = obterSaldoAtual(contaId);
+
+        return new ExtratoBancarioDto(dataInicial, dataFinal, saldoAtual, saldoDoPeriodo,  transacoes);
     }
 
     public Double obterSaldoAtual(UUID contaId){
-        return transacaoRepository.findAll().stream().mapToDouble(transacao ->{
-            if(transacao.getTipoTransacao() == 'D'){
-                return - transacao.getValor();
-            }else{
-                return  transacao.getValor();
-            }
-        }).sum();
+        Double saldo = transacaoRepository.findByContaContaId(contaId).stream()
+                .mapToDouble(transacao -> {
+                    if (transacao.getTipoTransacao() == 'D') {
+                        return -transacao.getValor();
+                    } else {
+                        return transacao.getValor();
+                    }
+                })
+                .sum();
+
+        return saldo;
     }
 }

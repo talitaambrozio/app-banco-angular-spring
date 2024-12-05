@@ -10,7 +10,8 @@ CREATE TABLE "cliente" (
                            "cliente_id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
                            "nome" varchar(80) UNIQUE NOT NULL,
                            "idade" int NOT NULL,
-                           "email" varchar(100) NOT NULL UNIQUE,
+                           "email" varchar(255) NOT NULL UNIQUE,
+                           "password" varchar(255) NOT NULL UNIQUE,
                            "conta_id" UUID NOT NULL UNIQUE,
                            CONSTRAINT fk_conta FOREIGN KEY ("conta_id") REFERENCES "conta" ("conta_id") ON DELETE CASCADE
 );
@@ -26,3 +27,20 @@ CREATE TABLE "transacao" (
                            "conta_id" UUID NOT NULL,
                            CONSTRAINT fk_conta FOREIGN KEY ("conta_id") REFERENCES "conta" ("conta_id")
 );
+
+
+
+CREATE TABLE roles (
+                            "role_id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                            "name" VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE users_roles (
+                            "cliente_id" UUID NOT NULL REFERENCES cliente(cliente_id) ON DELETE CASCADE,
+                            "role_id" UUID NOT NULL REFERENCES roles(role_id) ON DELETE CASCADE,
+                            PRIMARY KEY (cliente_id, role_id)
+);
+
+INSERT INTO roles ("name") VALUES ('ROLE_USER');
+
+INSERT INTO roles ("name") VALUES ('ROLE_ADMIN');

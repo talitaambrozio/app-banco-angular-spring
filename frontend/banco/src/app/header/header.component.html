@@ -1,5 +1,10 @@
 <p>
   <mat-toolbar color="primary">
     <span>BANCO ABC</span>
+    <span class="spacer"></span>
+    <button *ngIf="showLogoutButton" mat-icon-button (click)="logout()">
+      <mat-icon>exit_to_app</mat-icon>
+    </button>
   </mat-toolbar>
+
 </p>

@@ -7,6 +7,10 @@ import { Conta } from '../cadastro/model/conta.model';
 import { TransacaoService } from '../service/transacao/transacao.service';
 import { ContaService } from './../service/conta/conta.service';
 import { Transacao } from './model/transacao.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AutenticacaoService } from '../service/autenticacao/autenticacao.service';
+import { ClienteService } from '../service/cliente/cliente.service';
+import { DadosClienteLogado } from '../service/cliente/dados-cliente-logado.model';
 
 @Component({
   selector: 'app-transacoes',
@@ -27,19 +31,33 @@ export class TransacoesComponent implements OnInit {
     } as Conta,
   };
 
+  dadosClienteLogado: DadosClienteLogado ={
+    clienteId: '',
+    contaId: '',
+  }
+
   contaId: string = '';
   numeroConta: string = '';
+  username: string = '';
 
   constructor(
     private transacaoService: TransacaoService,
+    private autenticacaoService: AutenticacaoService,
+    private clienteService: ClienteService,
     private contaService: ContaService,
-    private currencyPipe: CurrencyPipe
+    private currencyPipe: CurrencyPipe,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
-    this.contaId = 'f4d44022-00c0-4bef-b724-e1f3a45c8ac0';
+    this.username = this.autenticacaoService.getUsernameFromToken();
 
-    this.buscarConta(this.contaId);
+    if (this.username) {
+      this.obtemDadosClienteLogado(this.username);
+      console.log('Username obtido do token:', this.username);
+    } else {
+      console.error('Username não encontrado no token JWT!');
+    }
   }
 
   buscarConta(contaId: string): void {
@@ -58,6 +76,15 @@ export class TransacoesComponent implements OnInit {
   novaTransacao(transacaoForm: NgForm): void {
     if (!transacaoForm.valid) {
       console.error('O formulário contém campos inválidos.');
+      this.snackBar.open(
+        'Erro: Preencha todos os campos corretamente!',
+        'Fechar',
+        {
+          duration: 3000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        }
+      );
       return;
     }
 
@@ -71,9 +98,24 @@ export class TransacoesComponent implements OnInit {
       next: (res: Transacao) => {
         console.log('Transação salva com sucesso:', res);
         transacaoForm.reset();
+
+        this.snackBar.open('Transação salva com sucesso!', 'Fechar', {
+          duration: 3000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        });
       },
       error: (err: HttpErrorResponse) => {
         console.error('Erro ao salvar transação:', err);
+        this.snackBar.open(
+          'Erro ao salvar transação. Tente novamente mais tarde.',
+          'Fechar',
+          {
+            duration: 3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          }
+        );
       },
     });
   }
@@ -83,5 +125,18 @@ export class TransacoesComponent implements OnInit {
       return this.currencyPipe.transform(value, 'BRL', 'symbol', '1.0-0') || '';
     }
     return '';
+  }
+
+  obtemDadosClienteLogado(username: string): void {
+    this.clienteService.obtemDadosClienteLogado(username).subscribe({
+      next: (res: DadosClienteLogado) => {
+        console.log('Dados do cliente logado:', res);
+        this.dadosClienteLogado = res;
+        this.buscarConta(this.dadosClienteLogado.contaId);
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Erro ao buscar cliente:', err);
+      },
+    });
   }
 }

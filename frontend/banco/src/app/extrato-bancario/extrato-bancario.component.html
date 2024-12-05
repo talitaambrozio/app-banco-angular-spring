@@ -9,6 +9,11 @@
 
 <div>
   <h1>Extrato Bancário</h1>
+  <div class="saldo">
+    <h1>
+      Saldo Atual <span>{{ saldoAtual | currency : "BRL" }}</span>
+    </h1>
+  </div>
 
 
   <div class="filtro">
@@ -92,9 +97,12 @@
   <!-- Extrato Bancário -->
   <div *ngIf="isFiltroAtivo" class="extrato-bancario">
     <div class="saldo">
-      <h1>
-        Saldo <span>{{ extratoBancario.saldo | currency : "BRL" }}</span>
-      </h1>
+      <h2>
+        Saldo Atual <span>{{ extratoBancario.saldoAtual | currency : "BRL" }}</span>
+      </h2>
+      <h2>
+        Saldo do Período <span>{{ extratoBancario.saldoDoPeriodo | currency : "BRL" }}</span>
+      </h2>
     </div>
 
     <h1>

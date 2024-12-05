@@ -3,6 +3,7 @@ package com.desafio.ibm.demo.controllers;
 import com.desafio.ibm.demo.models.dtos.ClienteAtualizaEmailDto;
 import com.desafio.ibm.demo.models.dtos.ClienteConsultaDto;
 import com.desafio.ibm.demo.models.dtos.ClienteRegistroDto;
+import com.desafio.ibm.demo.models.dtos.DadosClienteLogadoDto;
 import com.desafio.ibm.demo.services.ClienteService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+
 @CrossOrigin("http://localhost:4200")
 @RequestMapping("api/v1/cliente")
 public class ClienteController {
@@ -21,11 +23,6 @@ public class ClienteController {
     @Autowired
     private  ClienteService clienteService;
 
-    @PostMapping("/salvar-cliente/")
-    public ResponseEntity<ClienteConsultaDto> salvarCliente(@RequestBody ClienteRegistroDto dto){
-        return new ResponseEntity<ClienteConsultaDto>(clienteService.salvarCliente(dto),
-                HttpStatus.CREATED);
-    }
 
     @PutMapping("/atualizar-cliente/{id}")
     public ResponseEntity<ClienteConsultaDto> atualizarDadosCliente(@PathVariable UUID id,
@@ -50,6 +47,11 @@ public class ClienteController {
     @GetMapping("/clientes")
     public ResponseEntity<List<ClienteConsultaDto>> buscarClientes(){
         return new ResponseEntity<List<ClienteConsultaDto>>(clienteService.buscarClientes(),
+                HttpStatus.OK);
+    }
+    @GetMapping("/dados-cliente-logado")
+    public ResponseEntity<DadosClienteLogadoDto> obtemDadosClienteLogado(@RequestParam String username){
+        return new ResponseEntity<DadosClienteLogadoDto>(clienteService.obtemDadosClienteLogado(username),
                 HttpStatus.OK);
     }
 }

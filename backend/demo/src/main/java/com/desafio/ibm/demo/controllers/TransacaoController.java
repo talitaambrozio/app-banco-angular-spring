@@ -40,10 +40,11 @@ public class TransacaoController {
                 HttpStatus.OK);
     }
 
-    @GetMapping("/transacoes/obter-saldo/")
-    public ResponseEntity<Double> obterSaldo(@PathVariable UUID contaId){
+    @GetMapping("/transacoes/obter-saldo-atual")
+    public ResponseEntity<Double> obterSaldoAtual(@RequestParam UUID contaId){
         return new ResponseEntity<Double>(transacaoService.obterSaldoAtual(contaId),
                 HttpStatus.OK);
     }
+
 
 }

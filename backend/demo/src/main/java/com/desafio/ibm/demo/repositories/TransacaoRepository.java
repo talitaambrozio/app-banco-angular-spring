@@ -13,5 +13,5 @@ import java.util.UUID;
 public interface TransacaoRepository extends JpaRepository<Transacao, UUID> {
 
     List<Transacao> findByContaContaIdAndDataTransacaoBetween(UUID contaId, Date dataInicial, Date dataFinal);
-    List<Transacao> findAllByContaContaId(UUID contaId);
+    List<Transacao> findByContaContaId(UUID contaId);
 }

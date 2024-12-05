@@ -12,7 +12,8 @@ public record ExtratoBancarioDto(
         LocalDate dataInicial,
         @JsonFormat(pattern = "dd/MM/yyyy")
         LocalDate dataFinal,
-        Double saldo,
+        Double saldoAtual,
+        Double saldoDoPeriodo,
         List<Transacao> transacoes
 ) {
 }

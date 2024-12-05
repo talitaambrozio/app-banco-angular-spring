@@ -1,9 +1,16 @@
-import { DecimalPipe, registerLocaleData } from '@angular/common';
+import { registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import localePt from '@angular/common/locales/pt';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule, NativeDateAdapter } from '@angular/material/core';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+  MatNativeDateModule,
+  NativeDateAdapter,
+} from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -23,10 +30,12 @@ import { DadosPessoaisComponent } from './dados-pessoais/dados-pessoais.componen
 import { ExtratoBancarioComponent } from './extrato-bancario/extrato-bancario.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
-import { TransacoesComponent } from './transacoes/transacoes.component';
-
-import localePt from '@angular/common/locales/pt';
 import { LoginComponent } from './login/login/login.component';
+import { InterceptorService } from './service/interceptor/interceptor.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TransacoesComponent } from './transacoes/transacoes.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 registerLocaleData(localePt);
 
 export const MY_DATE_FORMATS = {
@@ -71,15 +80,22 @@ export const MY_DATE_FORMATS = {
     MatNativeDateModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatSnackBarModule
+
   ],
   providers: [
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
-    {provide: LOCALE_ID, useValue: 'pt' },
+    { provide: LOCALE_ID, useValue: 'pt' },
     {
       provide: DateAdapter,
       useClass: NativeDateAdapter,
       deps: [MAT_DATE_LOCALE]
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorService,
+      multi: true
     },
 
   ],
